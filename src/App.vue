@@ -48,7 +48,15 @@
     <v-toolbar app dark color="primary">
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 
-      <v-toolbar-title v-text="routeName"></v-toolbar-title>
+      <v-toolbar-title v-text="routeName" />
+
+      <v-spacer />
+
+      <v-toolbar-items>
+        <v-btn flat icon @click="login">
+          <v-icon>person</v-icon>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
     
     <v-content>
@@ -58,6 +66,7 @@
 </template>
 
 <script>
+import netlifyIdentity from 'netlify-identity-widget'
 
 export default {
   data () {
@@ -70,6 +79,19 @@ export default {
     routeName() {
       return this.$route.meta.name
     }
+  },
+
+  methods: {
+    login() {
+      netlifyIdentity.open("login")
+    }
+  },
+
+  mounted() {
+    netlifyIdentity.init({
+      container: "#netlify",
+      APIUrl: !process.env.production ? 'https://lucid-hamilton-cd5921.netlify.com/.netlify/identity' : null
+    });
   }
 }
 </script>
