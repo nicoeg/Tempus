@@ -52,11 +52,9 @@
 
       <v-spacer />
 
-      <v-toolbar-items>
-        <v-btn flat icon @click="login">
-          <v-icon>person</v-icon>
-        </v-btn>
-      </v-toolbar-items>
+      <v-btn flat icon @click="login">
+        <v-icon>person</v-icon>
+      </v-btn>
     </v-toolbar>
     
     <v-content>
@@ -66,7 +64,6 @@
 </template>
 
 <script>
-import netlifyIdentity from 'netlify-identity-widget'
 
 export default {
   data () {
@@ -83,15 +80,8 @@ export default {
 
   methods: {
     login() {
-      netlifyIdentity.open("login")
+      window.netlifyIdentity.open("login")
     }
-  },
-
-  mounted() {
-    netlifyIdentity.init({
-      container: "#netlify",
-      APIUrl: !process.env.production ? 'https://lucid-hamilton-cd5921.netlify.com/.netlify/identity' : null
-    });
   }
 }
 </script>
@@ -102,3 +92,10 @@ export default {
     text-transform: capitalize;
   }
 </style>
+
+<style scoped>
+  .v-list > span {
+    cursor: pointer;
+  }
+</style>
+
