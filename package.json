@@ -7,6 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.0.0-rc.1",
+    "axios": "^0.18.0",
+    "dayjs": "^1.7.5",
     "netlify-identity-widget": "^1.4.14",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
@@ -14,6 +17,7 @@
     "vuetify": "^1.0.19"
   },
   "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
     "node-sass": "^4.9.0",
