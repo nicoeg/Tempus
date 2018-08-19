@@ -1,4 +1,5 @@
 export function handler(event, context, callback) {
+    console.log(event)
     const { identity, user } = context.clientContext || {}
 
     callback(null, {

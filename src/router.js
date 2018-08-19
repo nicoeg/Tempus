@@ -4,7 +4,7 @@ import Register from './views/Register.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router =  new Router({
   mode: 'history',
   routes: [
     {
@@ -30,6 +30,28 @@ export default new Router({
       meta: {
         name: 'Indstillinger'
       }
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      beforeEnter: (to, from, next) => {
+        if (netlifyIdentity.currentUser()) {
+          return router.push('/')
+        }
+      
+        next()
+      }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => { 
+  if (to.name != 'login' && !netlifyIdentity.currentUser()) {
+    return router.push('/login')
+  }
+
+  next()
+})
+
+export default router

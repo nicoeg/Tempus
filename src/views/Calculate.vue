@@ -75,7 +75,7 @@
               <td class="field__total">43,44,-</td>
             </tr>
 
-            <tr class="field">
+            <tr class="field total">
               <td class="field__label">Løn</td>
 
               <td></td>
@@ -109,6 +109,11 @@ thead td {
 .field {
   &:nth-child(even) {
     background-color: #eee;
+  }
+
+  &.total {
+    background-color: #333;
+    color: #fff;
   }
 
   td {

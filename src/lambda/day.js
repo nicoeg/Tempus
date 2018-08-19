@@ -1,7 +1,7 @@
-const firebase = require('./firebase')
+const firebase = require('../lib/firebase')
 const dayjs = require('dayjs')
 
-const get_day = function(event, context, callback) {
+const get_day = function(event, user, callback) {
     const day = dayjs(event.path.split('/')[2])
     const params = {
         orderBy: '"start"',
@@ -9,7 +9,7 @@ const get_day = function(event, context, callback) {
         endAt: day.endOf('day').valueOf()
     }
 
-    firebase.get('hours/nico', params)
+    firebase.get('hours/' + user, params)
         .then(resp => {
             const values = Object.values(resp.data)
             let body = values[0] || null
@@ -37,7 +37,7 @@ const get_day = function(event, context, callback) {
         })
 }
 
-const add_day = function(event, context, callback) {
+const add_day = function(event, user, callback) {
     const body = JSON.parse(event.body)
     const data = {
         start: body.start,
@@ -61,7 +61,7 @@ const add_day = function(event, context, callback) {
         })
 }
 
-const update_day = function(event, context, callback) {
+const update_day = function(event, user, callback) {
     const id = event.path.split('/')[2]
     const body = JSON.parse(event.body)
     const data = {
@@ -76,7 +76,7 @@ const update_day = function(event, context, callback) {
         })
     }
 
-    firebase.update('hours/nico/' + id, data)
+    firebase.update('hours/' + user + '/' + id, data)
         .then(response => {
             callback(null, {
                 statusCode: 200,
@@ -96,7 +96,7 @@ const update_day = function(event, context, callback) {
 export function handler(event, context, callback) {
     const { identity, user } = context.clientContext || {}
 
-    if (!user) {
+    if (!user && !process.env.AUTH_USER) {
         callback(null, {
             statusCode: 401,
             body: JSON.stringify({
@@ -105,17 +105,19 @@ export function handler(event, context, callback) {
         })
     }
 
+    const userID = user ? user.id : process.env.AUTH_USER
+
     switch (event.httpMethod) {
         case 'GET':
-            get_day(event, context, callback)
+            get_day(event, userID, callback)
 
             break;
         case 'POST':
-            add_day(event, context, callback)
+            add_day(event, userID, callback)
 
             break;
         case 'PUT':
-            update_day(event, context, callback)
+            update_day(event, userID, callback)
 
             break;
         default:

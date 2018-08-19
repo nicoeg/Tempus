@@ -77,14 +77,23 @@
 </template>
 
 <script>
+import dayjs from 'dayjs'
+
 export default {
   data() {
     return {
+      date: dayjs(),
       fromModal: false,
       toModal: false,
       from: null,
       to: null
     }
+  },
+
+  mounted() {
+    document.addEventListener('backendready', () => {
+      backend.get('day/' + this.date.format('YYYY-MM-DD'))
+    })
   }
 }
 </script>
