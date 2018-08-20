@@ -2,12 +2,14 @@ const firebase = require('../lib/firebase')
 const dayjs = require('dayjs')
 
 const get_day = function(event, user, callback) {
-    const day = dayjs(event.path.split('/')[2])
+    const regex = new RegExp(/day\/([^\/]*)/)
+    const day = dayjs(event.path.match(regex)[1])
     const params = {
         orderBy: '"start"',
         startAt: day.startOf('day').valueOf(),
         endAt: day.endOf('day').valueOf()
     }
+    console.log(user, params)
 
     firebase.get('hours/' + user, params)
         .then(resp => {
@@ -62,7 +64,8 @@ const add_day = function(event, user, callback) {
 }
 
 const update_day = function(event, user, callback) {
-    const id = event.path.split('/')[2]
+    const regex = new RegExp(/day\/([^\/]*)/)
+    const id = dayjs(event.path.match(regex)[1])
     const body = JSON.parse(event.body)
     const data = {
         start: body.start,
@@ -105,7 +108,7 @@ export function handler(event, context, callback) {
         })
     }
 
-    const userID = user ? user.id : process.env.AUTH_USER
+    const userID = user ? user.sub : process.env.AUTH_USER
 
     switch (event.httpMethod) {
         case 'GET':
