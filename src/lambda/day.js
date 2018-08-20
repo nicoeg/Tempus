@@ -9,7 +9,6 @@ const get_day = function(event, user, callback) {
         startAt: day.startOf('day').valueOf(),
         endAt: day.endOf('day').valueOf()
     }
-    console.log(user, params)
 
     firebase.get('hours/' + user, params)
         .then(resp => {

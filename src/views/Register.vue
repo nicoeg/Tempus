@@ -19,7 +19,6 @@
         <v-dialog
           v-model="loading"
           hide-overlay
-          persistent
           width="300"
         >
           <v-card
@@ -46,7 +45,6 @@
             class="dialog"
             ref="dateDialog"
             v-model="dateModal"
-            persistent
             lazy
           >
             <div class="date" slot="activator" v-text="localeDateString" />
@@ -64,7 +62,6 @@
           ref="fromDialog"
           v-model="fromModal"
           :return-value.sync="from"
-          persistent
           lazy
         >
           <v-text-field
