@@ -35,7 +35,9 @@ export function handler(event, context, callback) {
         const body = {
             hours: hours,
             salary: settings.salary || 0,
-            deduction: settings.deduction || 0
+            atpcontribution: settings.atpcontribution || 94.65,
+            deduction: settings.deduction || 0,
+            tax: settings.tax || 40,
         }
 
         callback(null, {

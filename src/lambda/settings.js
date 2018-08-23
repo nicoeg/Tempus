@@ -22,7 +22,9 @@ export function handler(event, context, callback) {
                     statusCode: 200,
                     body: JSON.stringify({
                         salary: response.data.salary || 0,
-                        deduction: response.data.deduction || 0
+                        atpcontribution: response.data.atpcontribution || 94.65,
+                        deduction: response.data.deduction || 0,
+                        tax: response.data.tax || 40,
                     })
                 })
             })
@@ -33,7 +35,9 @@ export function handler(event, context, callback) {
         const body = JSON.parse(event.body)
         firebase.update('settings/' + userID, {
             salary: body.salary,
-            deduction: body.deduction
+            atpcontribution: body.atpcontribution,
+            deduction: body.deduction,
+            tax: body.tax
         })
             .then(() => {
                 callback(null, {

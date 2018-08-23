@@ -49,7 +49,7 @@
           >
             <div class="date" slot="activator" v-text="localeDateString" />
 
-            <v-date-picker v-if="dateModal" v-model="nativeDate" />
+            <v-date-picker v-if="dateModal" v-model="nativeDate" :first-day-of-week="1" />
           </v-dialog>
 
           <v-btn flat icon color="primary" @click="nextDay">

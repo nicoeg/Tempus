@@ -27,7 +27,16 @@
             <div class="field__label">Timeløn</div>
 
             <div class="field__value">
-              <v-text-field v-model="settings.salary" type="number" />
+              <v-text-field v-model.number="settings.salary" type="number" />
+              <div class="suffix">kr</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">ATP-bidrag</div>
+
+            <div class="field__value">
+              <v-text-field v-model.number="settings.atpcontribution" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
@@ -36,8 +45,17 @@
             <div class="field__label">Fradrag</div>
 
             <div class="field__value">
-              <v-text-field v-model="settings.deduction" type="number" />
+              <v-text-field v-model.number="settings.deduction" type="number" />
               <div class="suffix">kr</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">A-skat</div>
+
+            <div class="field__value">
+              <v-text-field v-model.number="settings.tax" type="number" />
+              <div class="suffix">%</div>
             </div>
           </div>
 
@@ -54,7 +72,9 @@ export default {
     return {
       settings: {
         salary: 0,
-        deduction: 0
+        atpcontribution: 0,
+        deduction: 0,
+        tax: 0
       },
       loading: false
     }
