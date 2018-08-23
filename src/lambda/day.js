@@ -125,4 +125,4 @@ export function handler(event, context, callback) {
         default:
             break;
     }
-  }
+}
