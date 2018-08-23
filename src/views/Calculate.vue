@@ -48,7 +48,7 @@
             <tr class="field">
               <td class="field__label">Arbejdstimer</td>
 
-              <td v-if="data">{{ format(data.hours, 2, 'decimal') }}</td>
+              <td v-if="data">{{ parseFloat(data.hours).toFixed(0) }}</td>
               <td v-else></td>
 
               <td v-if="data">{{ format(data.salary) }}</td>
@@ -181,7 +181,7 @@ export default {
     },
     format(number, digits, style) {
       return parseFloat(number).toLocaleString(undefined, {
-        maximumFractionDigits: digits || 3,
+        maximumFractionDigits: digits || 2,
         style: style || 'currency',
         currency: 'DKK'
       })
