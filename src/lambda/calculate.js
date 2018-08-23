@@ -26,7 +26,7 @@ export function handler(event, context, callback) {
         firebase.settings(userID),
         firebase.get('hours/' + userID, params)
     ]).then(responses => {
-        const settings = responses[0].data
+        const settings = responses[0].data || {}
         const hours = Object.values(responses[1].data)
             .map(value => {
                 return dayjs(value.end).diff(dayjs(value.start), 'hours', true)

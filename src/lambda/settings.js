@@ -18,13 +18,15 @@ export function handler(event, context, callback) {
     if (event.httpMethod == 'GET') {
         firebase.settings(userID)
             .then(response => {
+                const settings = response.data || {}
+
                 callback(null, {
                     statusCode: 200,
                     body: JSON.stringify({
-                        salary: response.data.salary || 0,
-                        atpcontribution: response.data.atpcontribution || 94.65,
-                        deduction: response.data.deduction || 0,
-                        tax: response.data.tax || 40,
+                        salary: settings.salary || 0,
+                        atpcontribution: settings.atpcontribution || 94.65,
+                        deduction: settings.deduction || 0,
+                        tax: settings.tax || 40,
                     })
                 })
             })

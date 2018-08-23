@@ -205,7 +205,7 @@ export default {
   },
 
   mounted() {
-    if (backend) {
+    if (typeof backend !== 'undefined') {
       this.fetch()
     } else {
       document.addEventListener('backendready', this.fetch)
