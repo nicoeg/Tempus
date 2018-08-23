@@ -1,6 +1,5 @@
 const firebase = require('../lib/firebase')
 const dayjs = require('dayjs')
-require('../lib/object-assign')
 
 export function handler(event, context, callback) {
     const { identity, user } = context.clientContext || {}

@@ -220,7 +220,11 @@ export default {
   },
 
   mounted() {
-    document.addEventListener('backendready', this.fetchDay)
+    if (backend) {
+      this.fetchDay()
+    } else {
+      document.addEventListener('backendready', this.fetchDay)
+    }
   }
 }
 </script>

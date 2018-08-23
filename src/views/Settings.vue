@@ -2,24 +2,46 @@
     <v-container fluid>
     <v-slide-y-transition mode="out-in">
       <v-layout column align-center>
-        <v-form class="form">
+        <v-dialog
+          v-model="loading"
+          hide-overlay
+          width="300"
+        >
+          <v-card
+            color="primary"
+            dark
+          >
+            <v-card-text>
+              Loading...
+              <v-progress-linear
+                indeterminate
+                color="white"
+                class="mb-0"
+              ></v-progress-linear>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+
+        <v-form class="form" @submit.prevent="save">
           <div class="field">
             <div class="field__label">Timeløn</div>
 
             <div class="field__value">
-              <v-text-field v-model="hourly" type="number" />
+              <v-text-field v-model="settings.salary" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
 
           <div class="field">
-            <div class="field__label">Bidrag</div>
+            <div class="field__label">Fradrag</div>
 
             <div class="field__value">
-              <v-text-field v-model="hourly" type="number" />
+              <v-text-field v-model="settings.deduction" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
+
+          <v-btn type="submit" color="primary">Gem</v-btn>
         </v-form>
       </v-layout>
     </v-slide-y-transition>
@@ -30,9 +52,37 @@
 export default {
   data() {
     return {
-      hourly: ''
+      settings: {
+        salary: 0,
+        deduction: 0
+      },
+      loading: false
     }
-  }  
+  },
+
+  methods: {
+    async fetch() {
+      this.loading = true
+      this.settings = (await backend.get('settings')).data
+      this.loading = false
+    },
+
+    async save() {
+      this.loading = true
+      
+      await backend.put('settings', this.settings)
+
+      this.loading = false
+    }
+  },
+
+  mounted() {
+    if (backend) {
+      this.fetch()
+    } else {
+      document.addEventListener('backendready', this.fetch)
+    }
+  }
 }
 </script>
 
