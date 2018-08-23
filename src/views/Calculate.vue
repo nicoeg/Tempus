@@ -44,15 +44,6 @@
         </v-dialog>
 
         <table class="sheet">
-          <thead>
-            <tr>
-              <td>Tekst</td>
-              <td>Sats</td>
-              <td>Trukket</td>
-              <td class="align-right">Total</td>
-            </tr>
-          </thead>
-
           <tbody>
             <tr class="field">
               <td class="field__label">Arbejdstimer</td>
