@@ -18,8 +18,8 @@ const get_day = function(event, user, callback) {
             if (body) {
                 body = {
                     id: Object.keys(resp.data)[0],
-                    start: dayjs(body.start).format('YYYY-MM-DD HH:mm:ss'),
-                    end: dayjs(body.end).format('YYYY-MM-DD HH:mm:ss')
+                    start: body.start,
+                    end: body.end
                 }
             }
 
