@@ -79,7 +79,7 @@
             format="24hr"
           >
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="fromModal = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="fromModal = false">Fortryd</v-btn>
             <v-btn flat color="primary" @click="$refs.fromDialog.save(from)">OK</v-btn>
           </v-time-picker>
         </v-dialog>
@@ -107,7 +107,7 @@
             format="24hr"
           >
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="toModal = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="toModal = false">Fortryd</v-btn>
             <v-btn flat color="primary" @click="$refs.toDialog.save(to)">OK</v-btn>
           </v-time-picker>
         </v-dialog>
@@ -252,6 +252,35 @@ export default {
 
     .v-btn:last-child {
       margin-left: 0;
+    }
+  }
+
+  .v-picker--time {
+    width: 100%;
+  }
+
+  .v-picker__title {
+    padding: 10px;
+  }
+
+  .v-time-picker-title__time .v-picker__title__btn, .v-time-picker-title__time span {
+    height: 45px;
+    font-size: 50px;
+  }
+
+  @media screen and (max-width: 350px) {
+    .v-picker__body {
+      width: 270px !important;
+    }
+
+    .v-time-picker-clock__container {
+      width: 270px !important;
+      height: 270px !important;
+    }
+
+    .v-time-picker-clock {
+      width: 260px !important;
+      height: 260px !important;
     }
   }
 </style>
