@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import api from '../api'
+
 export default {
   data() {
     return {
@@ -83,25 +85,19 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      this.settings = (await backend.get('settings')).data
+      this.settings = (await api.settings.get())
       this.loading = false
     },
 
     async save() {
       this.loading = true
-      
-      await backend.put('settings', this.settings)
-
+      await api.settings.update(this.settings)
       this.loading = false
     }
   },
 
   mounted() {
-    if (typeof backend !== 'undefined') {
-      this.fetch()
-    } else {
-      document.addEventListener('backendready', this.fetch)
-    }
+    this.fetch()
   }
 }
 </script>

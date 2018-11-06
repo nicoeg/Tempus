@@ -116,6 +116,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import api from '../api'
 
 export default {
   data() {
@@ -167,10 +168,8 @@ export default {
 
   methods: {
     async fetch() {
-      const date = this.month.format('YYYY-MM-DD')
-
       this.loading = true
-      this.data = (await backend.get('calculate/' + date)).data
+      this.data = await api.calculate(this.month)
       this.loading = false
     },
     nextMonth() {

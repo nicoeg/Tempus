@@ -36,18 +36,18 @@ const router =  new Router({
       name: 'login',
       component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
       beforeEnter: (to, from, next) => {
-        if (netlifyIdentity.currentUser()) {
+        if (true) { // TODO: Check auth
           return router.push('/')
         }
-      
+
         next()
       }
     }
   ]
 })
 
-router.beforeEach((to, from, next) => { 
-  if (to.name != 'login' && !netlifyIdentity.currentUser()) {
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'login' && !true) { // TODO: Check auth
     return router.push('/login')
   }
 
