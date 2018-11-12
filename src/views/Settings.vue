@@ -115,7 +115,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.fetch()
   }
 }

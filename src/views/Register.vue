@@ -223,12 +223,8 @@
             }
         },
 
-        mounted() {
-            if (typeof backend !== 'undefined') {
-                this.fetchDay()
-            } else {
-                document.addEventListener('backendready', this.fetchDay)
-            }
+        created() {
+            this.fetchDay()
         }
     }
 </script>
