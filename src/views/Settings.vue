@@ -42,11 +42,11 @@
           </div>
 
           <div class="field">
-            <div class="field__label">Fradrag</div>
+            <div class="field__label">A-skat</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.deduction" type="number" />
-              <div class="suffix">kr</div>
+              <v-text-field v-model.number="settings.tax" type="number" />
+              <div class="suffix">%</div>
             </div>
           </div>
 
@@ -56,6 +56,24 @@
             <div class="field__value">
               <v-text-field v-model.number="settings.tax" type="number" />
               <div class="suffix">%</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Fradrag</div>
+
+            <div class="field__value">
+              <v-text-field v-model.number="settings.deduction" type="number" />
+              <div class="suffix">kr</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field__label">Afregningsdag</div>
+
+            <div class="field__value">
+              <v-text-field v-model.number="settings.billingDay" type="number" />
+              <div class="suffix" />
             </div>
           </div>
 
@@ -76,7 +94,8 @@ export default {
         salary: 0,
         atpcontribution: 0,
         deduction: 0,
-        tax: 0
+        tax: 0,
+        billingDay: 0
       },
       loading: false
     }
@@ -118,6 +137,7 @@ export default {
       max-width: 30%;
 
       .suffix {
+        min-width: 17px;
         height: 32px;
         padding-top: 3px;
         padding-left: 5px;

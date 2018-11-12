@@ -67,6 +67,7 @@ const settings = {
                     atpcontribution: settings.atpcontribution || 94.65,
                     deduction: settings.deduction || 0,
                     tax: settings.tax || 40,
+                    billingDay: settings.billingDay
                 })
             } catch (response) {
                 return reject(response)
@@ -88,18 +89,25 @@ const settings = {
     }
 }
 
-const calculate = (day) => {
-    console.log(settings)
+const calculate = (date, allSettings) => {
     return new Promise(async (resolve, reject) => {
-        console.log(settings)
         const user = netlifyIdentity.currentUser().id
-        const settingsCopy = settings // Reassign settings since it won't be available in try block
+        if (allSettings === null) {
+            allSettings = await settings.get()
+        }
+
+        if (date === null) {
+            const pastDate = allSettings.billingDay >= dayjs().date()
+            date = dayjs()
+                .subtract(pastDate ? 1 : 0, 'month')
+                .set('date', allSettings.billingDay)
+        }
 
         try {
             const params = {
                 orderBy: '"start"',
-                startAt: day.startOf('month').valueOf(),
-                endAt: day.endOf('month').valueOf()
+                startAt: date.startOf('day').valueOf(),
+                endAt: date.add(1, 'month').subtract(1, 'day').endOf('day').valueOf()
             }
             const response = await firebase.get(`hours/${user}.json`, { params })
             const hours = Object.values(response.data)
@@ -107,9 +115,8 @@ const calculate = (day) => {
                     return dayjs(value.end).diff(dayjs(value.start), 'hours', true)
                 })
                 .reduce((a, b) => a + b, 0)
-            const settings = await settingsCopy.get()
 
-            return resolve({ hours, ...settings})
+            return resolve({ hours, settings: allSettings, date: params.startAt})
         } catch (response) {
             return reject(response)
         }

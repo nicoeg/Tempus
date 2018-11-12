@@ -48,13 +48,13 @@
             <tr class="field">
               <td class="field__label">Arbejdstimer</td>
 
-              <td v-if="data">{{ parseFloat(data.hours).toFixed(0) }}</td>
+              <td v-if="settings">{{ parseFloat(hours).toFixed(0) }}</td>
               <td v-else></td>
 
-              <td v-if="data">{{ format(data.salary) }}</td>
+              <td v-if="settings">{{ format(settings.salary) }}</td>
               <td v-else></td>
 
-              <td v-if="data" class="field__total">{{ format(moneyEarned) }}</td>
+              <td v-if="settings" class="field__total">{{ format(moneyEarned) }}</td>
               <td v-else></td>
             </tr>
 
@@ -63,10 +63,10 @@
 
               <td></td>
 
-              <td v-if="data">-{{ format(data.atpcontribution) }}</td>
+              <td v-if="settings">-{{ format(settings.atpcontribution) }}</td>
               <td v-else></td>
 
-              <td v-if="data" class="field__total">{{ format(afterATP) }}</td>
+              <td v-if="settings" class="field__total">{{ format(afterATP) }}</td>
               <td v-else></td>
             </tr>
 
@@ -75,21 +75,21 @@
 
               <td>8%</td>
 
-              <td v-if="data">-{{ format(amContribution) }}</td>
+              <td v-if="settings">-{{ format(amContribution) }}</td>
               <td v-else></td>
 
-              <td v-if="data" class="field__total">{{ format(afterAmContribution) }}</td>
+              <td v-if="settings" class="field__total">{{ format(afterAmContribution) }}</td>
               <td v-else></td>
             </tr>
 
             <tr class="field">
-              <td v-if="data" class="field__label">A-skat (Fradag: {{ format(data.deduction) }})</td>
+              <td v-if="settings" class="field__label">A-skat (Fradag: {{ format(settings.deduction) }})</td>
               <td v-else></td>
 
-              <td v-if="data">{{ data.tax }}%</td>
+              <td v-if="settings">{{ settings.tax }}%</td>
               <td v-else></td>
 
-              <td v-if="data">-{{ format(tax) }}</td>
+              <td v-if="settings">-{{ format(tax) }}</td>
               <td v-else></td>
 
               <td class="field__total"></td>
@@ -103,7 +103,7 @@
 
               <td></td>
 
-              <td v-if="data" class="field__total">{{ format(afterTax) }}</td>
+              <td v-if="settings" class="field__total">{{ format(afterTax) }}</td>
               <td v-else></td>
             </tr>
           </tbody>
@@ -123,30 +123,40 @@ export default {
     return {
       loading: false,
       dateModal: false,
-      month: dayjs(),
-      data: null
+      date: dayjs(),
+      settings: null,
+      hours: null
     }
   },
 
   computed: {
     localeDateString() {
-      var options = { year: 'numeric', month: 'long' }
+      const billingDay = this.settings ? this.settings.billingDay : 1
+      if (billingDay === 1) {
+        const options = { year: 'numeric', month: 'long' }
 
-      return this.month.toDate().toLocaleDateString(undefined, options)
+        return this.date.toDate().toLocaleDateString(undefined, options)
+      }
+
+      const options = {year: '2-digit', month: 'short', day: 'numeric'}
+
+      return [this.date, this.date.add(1, 'month')]
+        .map(date => date.toDate().toLocaleDateString(undefined, options))
+        .join(' - ')
     },
     nativeDate: {
       get() {
-        return this.month.format('YYYY-MM-DD')
+        return this.date.format('YYYY-MM-DD')
       },
       set(value) {
-        this.month = dayjs(value)
+        this.date = dayjs(value)
       }
     },
     moneyEarned() {
-      return this.data.salary * this.data.hours
+      return this.settings.salary * this.hours
     },
     afterATP() {
-      return Math.max(this.moneyEarned - this.data.atpcontribution, 0)
+      return Math.max(this.moneyEarned - this.settings.atpcontribution, 0)
     },
     amContribution() {
       return this.afterATP * .08
@@ -155,11 +165,11 @@ export default {
       return this.afterATP - this.amContribution
     },
     tax() {
-      if (this.afterAmContribution <= this.data.deduction) {
+      if (this.afterAmContribution <= this.settings.deduction) {
         return 0
       }
 
-      return (this.afterAmContribution - this.data.deduction) / this.data.tax
+      return (this.afterAmContribution - this.settings.deduction) / this.settings.tax
     },
     afterTax() {
       return this.afterAmContribution - this.tax
@@ -167,16 +177,23 @@ export default {
   },
 
   methods: {
-    async fetch() {
+    async fetch(initial = false) {
       this.loading = true
-      this.data = await api.calculate(this.month)
+      const data = await api.calculate(initial ? null : this.date, this.settings)
+      this.hours = data.hours
+      this.date = dayjs(data.date)
+      this.settings = data.settings
       this.loading = false
     },
     nextMonth() {
-      this.month = this.month.add(1, 'month')
+      this.date = this.date.add(1, 'month')
+      this.fetch()
+      this.dateModal = false
     },
     previousMonth() {
-      this.month = this.month.subtract(1, 'month')
+      this.date = this.date.subtract(1, 'month')
+      this.fetch()
+      this.dateModal = false
     },
     format(number, digits, style) {
       return parseFloat(number).toLocaleString(undefined, {
@@ -187,19 +204,8 @@ export default {
     }
   },
 
-  watch: {
-    month() {
-      this.fetch()
-      this.dateModal = false
-    }
-  },
-
-  mounted() {
-    if (typeof backend !== 'undefined') {
-      this.fetch()
-    } else {
-      document.addEventListener('backendready', this.fetch)
-    }
+  created() {
+    this.fetch(true)
   }
 }
 </script>

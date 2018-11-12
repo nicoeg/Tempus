@@ -20,7 +20,7 @@
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.10.0",
     "sass-loader": "^7.0.1",
     "vue-cli-plugin-netlify-lambda": "^0.1.0",
     "vue-cli-plugin-vuetify": "^0.1.6",
