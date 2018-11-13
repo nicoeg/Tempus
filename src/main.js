@@ -6,7 +6,6 @@ import App from './App.vue'
 import router from './router'
 import './registerServiceWorker'
 
-import setupBackend from './lib/setup-backend'
 
 Vue.config.productionTip = false
 
@@ -16,17 +15,12 @@ netlifyIdentity.init({
 });
 
 netlifyIdentity.on('login', user => {
-  setupBackend()
   router.push('/')
 })
 
 netlifyIdentity.on('logout', user => {
   router.push('/login')
 })
-
-if (netlifyIdentity.currentUser()) {
-  setupBackend()
-}
 
 new Vue({
   router,
