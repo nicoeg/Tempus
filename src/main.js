@@ -16,6 +16,7 @@ netlifyIdentity.init({
 
 netlifyIdentity.on('login', user => {
   router.push('/')
+  netlifyIdentity.close()
 })
 
 netlifyIdentity.on('logout', user => {
