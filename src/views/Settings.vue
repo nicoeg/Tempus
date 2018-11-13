@@ -1,33 +1,33 @@
 <template>
-    <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
-        <v-dialog
+    <VContainer fluid>
+    <VSlideYTransition mode="out-in">
+      <VLayout column align-center>
+        <VDialog
           v-model="loading"
           hide-overlay
           width="300"
         >
-          <v-card
+          <VCard
             color="primary"
             dark
           >
-            <v-card-text>
+            <VCardText>
               Loading...
-              <v-progress-linear
+              <VProgressLinear
                 indeterminate
                 color="white"
                 class="mb-0"
-              ></v-progress-linear>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+              ></VProgressLinear>
+            </VCardText>
+          </VCard>
+        </VDialog>
 
-        <v-form class="form" @submit.prevent="save">
+        <VForm class="form" @submit.prevent="save">
           <div class="field">
             <div class="field__label">Timeløn</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.salary" type="number" />
+              <VTextField v-model.number="settings.salary" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
@@ -36,7 +36,7 @@
             <div class="field__label">ATP-bidrag</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.atpcontribution" type="number" />
+              <VTextField v-model.number="settings.atpcontribution" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
@@ -45,7 +45,7 @@
             <div class="field__label">A-skat</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.tax" type="number" />
+              <VTextField v-model.number="settings.tax" type="number" />
               <div class="suffix">%</div>
             </div>
           </div>
@@ -54,7 +54,7 @@
             <div class="field__label">A-skat</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.tax" type="number" />
+              <VTextField v-model.number="settings.tax" type="number" />
               <div class="suffix">%</div>
             </div>
           </div>
@@ -63,7 +63,7 @@
             <div class="field__label">Fradrag</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.deduction" type="number" />
+              <VTextField v-model.number="settings.deduction" type="number" />
               <div class="suffix">kr</div>
             </div>
           </div>
@@ -72,16 +72,16 @@
             <div class="field__label">Afregningsdag</div>
 
             <div class="field__value">
-              <v-text-field v-model.number="settings.billingDay" type="number" />
+              <VTextField v-model.number="settings.billingDay" type="number" />
               <div class="suffix" />
             </div>
           </div>
 
-          <v-btn type="submit" color="primary">Gem</v-btn>
-        </v-form>
-      </v-layout>
-    </v-slide-y-transition>
-  </v-container>
+          <VBtn type="submit" color="primary">Gem</VBtn>
+        </VForm>
+      </VLayout>
+    </VSlideYTransition>
+  </VContainer>
 </template>
 
 <script>
@@ -104,7 +104,7 @@ export default {
   methods: {
     async fetch() {
       this.loading = true
-      this.settings = (await api.settings.get())
+      this.settings = await api.settings.get()
       this.loading = false
     },
 
@@ -122,32 +122,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .form {
-    width: 100%;
-  }
+.form {
+  width: 100%;
+}
 
-  .field {
+.field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__value {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    max-width: 30%;
 
-    &__value {
-      display: flex;
-      align-items: center;
-      max-width: 30%;
-
-      .suffix {
-        min-width: 17px;
-        height: 32px;
-        padding-top: 3px;
-        padding-left: 5px;
-      }
+    .suffix {
+      min-width: 17px;
+      height: 32px;
+      padding-top: 3px;
+      padding-left: 5px;
     }
   }
+}
 </style>
 
 <style>
-  .field__value input {
-    text-align: right;
-  }
+.field__value input {
+  text-align: right;
+}
 </style>

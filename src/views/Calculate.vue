@@ -1,47 +1,47 @@
 <template>
-  <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
+  <VContainer fluid>
+    <VSlideYTransition mode="out-in">
+      <VLayout column align-center>
         <div class="date-header">
-          <v-btn flat icon color="primary" @click="previousMonth">
-            <v-icon>keyboard_arrow_left</v-icon>
-          </v-btn>
+          <VBtn flat icon color="primary" @click="previousMonth">
+            <VIcon>keyboard_arrow_left</VIcon>
+          </VBtn>
 
-          <v-dialog
-            class="dialog"
+          <VDialog
             ref="dateDialog"
             v-model="dateModal"
+            class="dialog"
             lazy
           >
-            <div class="date" slot="activator" v-text="localeDateString" />
+            <div slot="activator" class="date" v-text="localeDateString" />
 
-            <v-date-picker v-if="dateModal" v-model="nativeDate" type="month" />
-          </v-dialog>
+            <VDatePicker v-if="dateModal" v-model="nativeDate" type="month" />
+          </VDialog>
 
-          <v-btn flat icon color="primary" @click="nextMonth">
-            <v-icon>keyboard_arrow_right</v-icon>
-          </v-btn>
+          <VBtn flat icon color="primary" @click="nextMonth">
+            <VIcon>keyboard_arrow_right</VIcon>
+          </VBtn>
         </div>
 
-        <v-dialog
+        <VDialog
           v-model="loading"
           hide-overlay
           width="300"
         >
-          <v-card
+          <VCard
             color="primary"
             dark
           >
-            <v-card-text>
+            <VCardText>
               Loading...
-              <v-progress-linear
+              <VProgressLinear
                 indeterminate
                 color="white"
                 class="mb-0"
-              ></v-progress-linear>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+              ></VProgressLinear>
+            </VCardText>
+          </VCard>
+        </VDialog>
 
         <table class="sheet">
           <tbody>
@@ -109,9 +109,9 @@
           </tbody>
         </table>
 
-      </v-layout>
-    </v-slide-y-transition>
-  </v-container>
+      </VLayout>
+    </VSlideYTransition>
+  </VContainer>
 </template>
 
 <script>
@@ -138,7 +138,7 @@ export default {
         return this.date.toDate().toLocaleDateString(undefined, options)
       }
 
-      const options = {year: '2-digit', month: 'short', day: 'numeric'}
+      const options = { year: '2-digit', month: 'short', day: 'numeric' }
 
       return [this.date, this.date.add(1, 'month')]
         .map(date => date.toDate().toLocaleDateString(undefined, options))
@@ -159,7 +159,7 @@ export default {
       return Math.max(this.moneyEarned - this.settings.atpcontribution, 0)
     },
     amContribution() {
-      return this.afterATP * .08
+      return this.afterATP * 0.08
     },
     afterAmContribution() {
       return this.afterATP - this.amContribution
@@ -169,7 +169,9 @@ export default {
         return 0
       }
 
-      return (this.afterAmContribution - this.settings.deduction) / this.settings.tax
+      return (
+        (this.afterAmContribution - this.settings.deduction) / this.settings.tax
+      )
     },
     afterTax() {
       return this.afterAmContribution - this.tax
@@ -179,7 +181,10 @@ export default {
   methods: {
     async fetch(initial = false) {
       this.loading = true
-      const data = await api.calculate(initial ? null : this.date, this.settings)
+      const data = await api.calculate(
+        initial ? null : this.date,
+        this.settings
+      )
       this.hours = data.hours
       this.date = dayjs(data.date)
       this.settings = data.settings
