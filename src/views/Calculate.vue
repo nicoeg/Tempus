@@ -1,116 +1,114 @@
 <template>
   <VContainer fluid>
-    <VSlideYTransition mode="out-in">
-      <VLayout column align-center>
-        <div class="date-header">
-          <VBtn flat icon color="primary" @click="previousMonth">
-            <VIcon>keyboard_arrow_left</VIcon>
-          </VBtn>
-
-          <VDialog
-            ref="dateDialog"
-            v-model="dateModal"
-            class="dialog"
-            lazy
-          >
-            <div slot="activator" class="date" v-text="localeDateString" />
-
-            <VDatePicker v-if="dateModal" v-model="nativeDate" type="month" />
-          </VDialog>
-
-          <VBtn flat icon color="primary" @click="nextMonth">
-            <VIcon>keyboard_arrow_right</VIcon>
-          </VBtn>
-        </div>
+    <VLayout column align-center>
+      <div class="date-header">
+        <VBtn flat icon color="primary" @click="previousMonth">
+          <VIcon>keyboard_arrow_left</VIcon>
+        </VBtn>
 
         <VDialog
-          v-model="loading"
-          hide-overlay
-          width="300"
+          ref="dateDialog"
+          v-model="dateModal"
+          class="dialog"
+          lazy
         >
-          <VCard
-            color="primary"
-            dark
-          >
-            <VCardText>
-              Loading...
-              <VProgressLinear
-                indeterminate
-                color="white"
-                class="mb-0"
-              ></VProgressLinear>
-            </VCardText>
-          </VCard>
+          <div slot="activator" class="date" v-text="localeDateString" />
+
+          <VDatePicker v-if="dateModal" v-model="nativeDate" type="month" />
         </VDialog>
 
-        <table class="sheet">
-          <tbody>
-            <tr class="field">
-              <td class="field__label">Arbejdstimer</td>
+        <VBtn flat icon color="primary" @click="nextMonth">
+          <VIcon>keyboard_arrow_right</VIcon>
+        </VBtn>
+      </div>
 
-              <td v-if="settings">{{ parseFloat(hours).toFixed(0) }}</td>
-              <td v-else></td>
+      <VDialog
+        v-model="loading"
+        hide-overlay
+        width="300"
+      >
+        <VCard
+          color="primary"
+          dark
+        >
+          <VCardText>
+            Loading...
+            <VProgressLinear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></VProgressLinear>
+          </VCardText>
+        </VCard>
+      </VDialog>
 
-              <td v-if="settings">{{ format(settings.salary) }}</td>
-              <td v-else></td>
+      <table class="sheet">
+        <tbody>
+          <tr class="field">
+            <td class="field__label">Arbejdstimer</td>
 
-              <td v-if="settings" class="field__total">{{ format(moneyEarned) }}</td>
-              <td v-else></td>
-            </tr>
+            <td v-if="settings">{{ parseFloat(hours).toFixed(0) }}</td>
+            <td v-else></td>
 
-            <tr class="field">
-              <td class="field__label">ATP-bidrag</td>
+            <td v-if="settings">{{ format(settings.salary) }}</td>
+            <td v-else></td>
 
-              <td></td>
+            <td v-if="settings" class="field__total">{{ format(moneyEarned) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td v-if="settings">-{{ format(settings.atpcontribution) }}</td>
-              <td v-else></td>
+          <tr class="field">
+            <td class="field__label">ATP-bidrag</td>
 
-              <td v-if="settings" class="field__total">{{ format(afterATP) }}</td>
-              <td v-else></td>
-            </tr>
+            <td></td>
 
-            <tr class="field">
-              <td class="field__label">AM-bidrag</td>
+            <td v-if="settings">-{{ format(settings.atpcontribution) }}</td>
+            <td v-else></td>
 
-              <td>8%</td>
+            <td v-if="settings" class="field__total">{{ format(afterATP) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td v-if="settings">-{{ format(amContribution) }}</td>
-              <td v-else></td>
+          <tr class="field">
+            <td class="field__label">AM-bidrag</td>
 
-              <td v-if="settings" class="field__total">{{ format(afterAmContribution) }}</td>
-              <td v-else></td>
-            </tr>
+            <td>8%</td>
 
-            <tr class="field">
-              <td v-if="settings" class="field__label">A-skat (Fradag: {{ format(settings.deduction) }})</td>
-              <td v-else></td>
+            <td v-if="settings">-{{ format(amContribution) }}</td>
+            <td v-else></td>
 
-              <td v-if="settings">{{ settings.tax }}%</td>
-              <td v-else></td>
+            <td v-if="settings" class="field__total">{{ format(afterAmContribution) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td v-if="settings">-{{ format(tax) }}</td>
-              <td v-else></td>
+          <tr class="field">
+            <td v-if="settings" class="field__label">A-skat (Fradag: {{ format(settings.deduction) }})</td>
+            <td v-else></td>
 
-              <td class="field__total"></td>
-            </tr>
+            <td v-if="settings">{{ settings.tax }}%</td>
+            <td v-else></td>
+
+            <td v-if="settings">-{{ format(tax) }}</td>
+            <td v-else></td>
+
+            <td class="field__total"></td>
+          </tr>
 
 
-            <tr class="field total">
-              <td class="field__label">Løn</td>
+          <tr class="field total">
+            <td class="field__label">Løn</td>
 
-              <td></td>
+            <td></td>
 
-              <td></td>
+            <td></td>
 
-              <td v-if="settings" class="field__total">{{ format(afterTax) }}</td>
-              <td v-else></td>
-            </tr>
-          </tbody>
-        </table>
+            <td v-if="settings" class="field__total">{{ format(afterTax) }}</td>
+            <td v-else></td>
+          </tr>
+        </tbody>
+      </table>
 
-      </VLayout>
-    </VSlideYTransition>
+    </VLayout>
   </VContainer>
 </template>
 

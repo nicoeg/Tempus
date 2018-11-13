@@ -1,128 +1,126 @@
 <template>
     <VContainer fluid>
-        <VSlideYTransition mode="out-in">
-            <VLayout column align-center>
-                <VDialog v-model="errorDialog">
-                    <VCard>
-                        <VCardTitle class="headline">Ups!</VCardTitle>
+        <VLayout column align-center>
+            <VDialog v-model="errorDialog">
+                <VCard>
+                    <VCardTitle class="headline">Ups!</VCardTitle>
 
-                        <VCardText v-text="errorMessage" />
+                    <VCardText v-text="errorMessage" />
 
-                        <VCardActions>
-                            <VSpacer />
+                    <VCardActions>
+                        <VSpacer />
 
-                            <VBtn color="primary" flat="flat" @click="errorDialog = false">Okay du!</VBtn>
-                        </VCardActions>
-                    </VCard>
-                </VDialog>
+                        <VBtn color="primary" flat="flat" @click="errorDialog = false">Okay du!</VBtn>
+                    </VCardActions>
+                </VCard>
+            </VDialog>
 
-                <VDialog
-                    v-model="loading"
-                    hide-overlay
-                    width="300"
+            <VDialog
+                v-model="loading"
+                hide-overlay
+                width="300"
+            >
+                <VCard color="primary" dark>
+                    <VCardText>
+                        Loading...
+
+                        <VProgressLinear
+                            indeterminate
+                            color="white"
+                            class="mb-0"
+                        />
+                    </VCardText>
+                </VCard>
+            </VDialog>
+
+            <VDialog
+                ref="fromDialog"
+                v-model="fromModal"
+                class="dialog"
+                :return-value.sync="from"
+                lazy
+            >
+                <VTimePicker
+                    v-if="fromModal"
+                    v-model="from"
+                    format="24hr"
                 >
-                    <VCard color="primary" dark>
-                        <VCardText>
-                            Loading...
+                    <VSpacer></VSpacer>
+                    <VBtn flat color="primary" @click="fromModal = false">Fortryd</VBtn>
+                    <VBtn flat color="primary" @click="$refs.fromDialog.save(from)">OK</VBtn>
+                </VTimePicker>
+            </VDialog>
 
-                            <VProgressLinear
-                                indeterminate
-                                color="white"
-                                class="mb-0"
-                            />
-                        </VCardText>
-                    </VCard>
-                </VDialog>
-
-                <VDialog
-                    ref="fromDialog"
-                    v-model="fromModal"
-                    class="dialog"
-                    :return-value.sync="from"
-                    lazy
+            <VDialog
+                ref="toDialog"
+                v-model="toModal"
+                class="dialog"
+                :return-value.sync="to"
+                persistent
+                lazy
+            >
+                <VTimePicker
+                    v-if="toModal"
+                    v-model="to"
+                    format="24hr"
                 >
-                    <VTimePicker
-                        v-if="fromModal"
-                        v-model="from"
-                        format="24hr"
-                    >
-                        <VSpacer></VSpacer>
-                        <VBtn flat color="primary" @click="fromModal = false">Fortryd</VBtn>
-                        <VBtn flat color="primary" @click="$refs.fromDialog.save(from)">OK</VBtn>
-                    </VTimePicker>
-                </VDialog>
+                    <VSpacer></VSpacer>
+                    <VBtn flat color="primary" @click="toModal = false">Fortryd</VBtn>
+                    <VBtn flat color="primary" @click="$refs.toDialog.save(to)">OK</VBtn>
+                </VTimePicker>
+            </VDialog>
 
-                <VDialog
-                    ref="toDialog"
-                    v-model="toModal"
-                    class="dialog"
-                    :return-value.sync="to"
-                    persistent
-                    lazy
-                >
-                    <VTimePicker
-                        v-if="toModal"
-                        v-model="to"
-                        format="24hr"
-                    >
-                        <VSpacer></VSpacer>
-                        <VBtn flat color="primary" @click="toModal = false">Fortryd</VBtn>
-                        <VBtn flat color="primary" @click="$refs.toDialog.save(to)">OK</VBtn>
-                    </VTimePicker>
-                </VDialog>
-
-                <div class="date-header">
-                    <VBtn flat icon color="primary" @click="previousDay">
-                        <VIcon>keyboard_arrow_left</VIcon>
-                    </VBtn>
-
-                    <VDialog
-                        ref="dateDialog"
-                        v-model="dateModal"
-                        class="dialog"
-                        lazy
-                    >
-                        <div slot="activator" class="date" v-text="localeDateString" />
-
-                        <VDatePicker v-if="dateModal" v-model="nativeDate" :first-day-of-week="1" />
-                    </VDialog>
-
-                    <VBtn flat icon color="primary" @click="nextDay">
-                        <VIcon>keyboard_arrow_right</VIcon>
-                    </VBtn>
-                </div>
-
-                <div class="time-container">
-                    <VTextField
-                        v-model="from"
-                        label="Start tidspunkt"
-                        solo
-                        readonly
-                        hide-details
-                        @click="fromModal = true"
-                    />
-
-                    <span class="time-container__spacer">-</span>
-
-                    <VTextField
-                        v-model="to"
-                        label="Slut tidspunkt"
-                        solo
-                        readonly
-                        hide-details
-                        @click="toModal = true"
-                    />
-                </div>
-
-                <VBtn
-                    :loading="saving"
-                    class="submit"
-                    color="primary"
-                    @click="saveDay" >
-                    Gem
+            <div class="date-header">
+                <VBtn flat icon color="primary" @click="previousDay">
+                    <VIcon>keyboard_arrow_left</VIcon>
                 </VBtn>
-            </VLayout>
-        </VSlideYTransition>
+
+                <VDialog
+                    ref="dateDialog"
+                    v-model="dateModal"
+                    class="dialog"
+                    lazy
+                >
+                    <div slot="activator" class="date" v-text="localeDateString" />
+
+                    <VDatePicker v-if="dateModal" v-model="nativeDate" :first-day-of-week="1" />
+                </VDialog>
+
+                <VBtn flat icon color="primary" @click="nextDay">
+                    <VIcon>keyboard_arrow_right</VIcon>
+                </VBtn>
+            </div>
+
+            <div class="time-container">
+                <VTextField
+                    v-model="from"
+                    label="Start tidspunkt"
+                    solo
+                    readonly
+                    hide-details
+                    @click="fromModal = true"
+                />
+
+                <span class="time-container__spacer">-</span>
+
+                <VTextField
+                    v-model="to"
+                    label="Slut tidspunkt"
+                    solo
+                    readonly
+                    hide-details
+                    @click="toModal = true"
+                />
+            </div>
+
+            <VBtn
+                :loading="saving"
+                class="submit"
+                color="primary"
+                @click="saveDay" >
+                Gem
+            </VBtn>
+        </VLayout>
     </VContainer>
 </template>
 

@@ -1,86 +1,84 @@
 <template>
     <VContainer fluid>
-    <VSlideYTransition mode="out-in">
-      <VLayout column align-center>
-        <VDialog
-          v-model="loading"
-          hide-overlay
-          width="300"
+    <VLayout column align-center>
+      <VDialog
+        v-model="loading"
+        hide-overlay
+        width="300"
+      >
+        <VCard
+          color="primary"
+          dark
         >
-          <VCard
-            color="primary"
-            dark
-          >
-            <VCardText>
-              Loading...
-              <VProgressLinear
-                indeterminate
-                color="white"
-                class="mb-0"
-              ></VProgressLinear>
-            </VCardText>
-          </VCard>
-        </VDialog>
+          <VCardText>
+            Loading...
+            <VProgressLinear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></VProgressLinear>
+          </VCardText>
+        </VCard>
+      </VDialog>
 
-        <VForm class="form" @submit.prevent="save">
-          <div class="field">
-            <div class="field__label">Timeløn</div>
+      <VForm class="form" @submit.prevent="save">
+        <div class="field">
+          <div class="field__label">Timeløn</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.salary" type="number" />
-              <div class="suffix">kr</div>
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.salary" type="number" />
+            <div class="suffix">kr</div>
           </div>
+        </div>
 
-          <div class="field">
-            <div class="field__label">ATP-bidrag</div>
+        <div class="field">
+          <div class="field__label">ATP-bidrag</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.atpcontribution" type="number" />
-              <div class="suffix">kr</div>
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.atpcontribution" type="number" />
+            <div class="suffix">kr</div>
           </div>
+        </div>
 
-          <div class="field">
-            <div class="field__label">A-skat</div>
+        <div class="field">
+          <div class="field__label">A-skat</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.tax" type="number" />
-              <div class="suffix">%</div>
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.tax" type="number" />
+            <div class="suffix">%</div>
           </div>
+        </div>
 
-          <div class="field">
-            <div class="field__label">A-skat</div>
+        <div class="field">
+          <div class="field__label">A-skat</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.tax" type="number" />
-              <div class="suffix">%</div>
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.tax" type="number" />
+            <div class="suffix">%</div>
           </div>
+        </div>
 
-          <div class="field">
-            <div class="field__label">Fradrag</div>
+        <div class="field">
+          <div class="field__label">Fradrag</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.deduction" type="number" />
-              <div class="suffix">kr</div>
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.deduction" type="number" />
+            <div class="suffix">kr</div>
           </div>
+        </div>
 
-          <div class="field">
-            <div class="field__label">Afregningsdag</div>
+        <div class="field">
+          <div class="field__label">Afregningsdag</div>
 
-            <div class="field__value">
-              <VTextField v-model.number="settings.billingDay" type="number" />
-              <div class="suffix" />
-            </div>
+          <div class="field__value">
+            <VTextField v-model.number="settings.billingDay" type="number" />
+            <div class="suffix" />
           </div>
+        </div>
 
-          <VBtn type="submit" color="primary">Gem</VBtn>
-        </VForm>
-      </VLayout>
-    </VSlideYTransition>
+        <VBtn type="submit" color="primary">Gem</VBtn>
+      </VForm>
+    </VLayout>
   </VContainer>
 </template>
 

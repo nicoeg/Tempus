@@ -61,8 +61,10 @@
     </VToolbar>
 
     <VContent>
-      <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
-      <router-view/>
+      <VSlideYTransition mode="out-in">
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <router-view/>
+      </VSlideYTransition>
     </VContent>
   </VApp>
 </template>
