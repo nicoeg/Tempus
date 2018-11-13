@@ -1,122 +1,120 @@
 <template>
-  <v-container fluid>
-    <v-slide-y-transition mode="out-in">
-      <v-layout column align-center>
-        <div class="date-header">
-          <v-btn flat icon color="primary" @click="previousMonth">
-            <v-icon>keyboard_arrow_left</v-icon>
-          </v-btn>
+  <VContainer fluid>
+    <VLayout column align-center>
+      <div class="date-header">
+        <VBtn flat icon color="primary" @click="previousMonth">
+          <VIcon>keyboard_arrow_left</VIcon>
+        </VBtn>
 
-          <v-dialog
-            class="dialog"
-            ref="dateDialog"
-            v-model="dateModal"
-            lazy
-          >
-            <div class="date" slot="activator" v-text="localeDateString" />
-
-            <v-date-picker v-if="dateModal" v-model="nativeDate" type="month" />
-          </v-dialog>
-
-          <v-btn flat icon color="primary" @click="nextMonth">
-            <v-icon>keyboard_arrow_right</v-icon>
-          </v-btn>
-        </div>
-
-        <v-dialog
-          v-model="loading"
-          hide-overlay
-          width="300"
+        <VDialog
+          ref="dateDialog"
+          v-model="dateModal"
+          class="dialog"
+          lazy
         >
-          <v-card
-            color="primary"
-            dark
-          >
-            <v-card-text>
-              Loading...
-              <v-progress-linear
-                indeterminate
-                color="white"
-                class="mb-0"
-              ></v-progress-linear>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
+          <div slot="activator" class="date" v-text="localeDateString" />
 
-        <table class="sheet">
-          <tbody>
-            <tr class="field">
-              <td class="field__label">Arbejdstimer</td>
+          <VDatePicker v-if="dateModal" v-model="nativeDate" type="month" />
+        </VDialog>
 
-              <td v-if="settings">{{ parseFloat(hours).toFixed(0) }}</td>
-              <td v-else></td>
+        <VBtn flat icon color="primary" @click="nextMonth">
+          <VIcon>keyboard_arrow_right</VIcon>
+        </VBtn>
+      </div>
 
-              <td v-if="settings">{{ format(settings.salary) }}</td>
-              <td v-else></td>
+      <VDialog
+        v-model="loading"
+        hide-overlay
+        width="300"
+      >
+        <VCard
+          color="primary"
+          dark
+        >
+          <VCardText>
+            Loading...
+            <VProgressLinear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></VProgressLinear>
+          </VCardText>
+        </VCard>
+      </VDialog>
 
-              <td v-if="settings" class="field__total">{{ format(moneyEarned) }}</td>
-              <td v-else></td>
-            </tr>
+      <table class="sheet">
+        <tbody>
+          <tr class="field">
+            <td class="field__label">Arbejdstimer</td>
 
-            <tr class="field">
-              <td class="field__label">ATP-bidrag</td>
+            <td v-if="settings">{{ parseFloat(hours).toFixed(0) }}</td>
+            <td v-else></td>
 
-              <td></td>
+            <td v-if="settings">{{ format(settings.salary) }}</td>
+            <td v-else></td>
 
-              <td v-if="settings">-{{ format(settings.atpcontribution) }}</td>
-              <td v-else></td>
+            <td v-if="settings" class="field__total">{{ format(moneyEarned) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td v-if="settings" class="field__total">{{ format(afterATP) }}</td>
-              <td v-else></td>
-            </tr>
+          <tr class="field">
+            <td class="field__label">ATP-bidrag</td>
 
-            <tr class="field">
-              <td class="field__label">AM-bidrag</td>
+            <td></td>
 
-              <td>8%</td>
+            <td v-if="settings">-{{ format(settings.atpcontribution) }}</td>
+            <td v-else></td>
 
-              <td v-if="settings">-{{ format(amContribution) }}</td>
-              <td v-else></td>
+            <td v-if="settings" class="field__total">{{ format(afterATP) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td v-if="settings" class="field__total">{{ format(afterAmContribution) }}</td>
-              <td v-else></td>
-            </tr>
+          <tr class="field">
+            <td class="field__label">AM-bidrag</td>
 
-            <tr class="field">
-              <td v-if="settings" class="field__label">A-skat (Fradag: {{ format(settings.deduction) }})</td>
-              <td v-else></td>
+            <td>8%</td>
 
-              <td v-if="settings">{{ settings.tax }}%</td>
-              <td v-else></td>
+            <td v-if="settings">-{{ format(amContribution) }}</td>
+            <td v-else></td>
 
-              <td v-if="settings">-{{ format(tax) }}</td>
-              <td v-else></td>
+            <td v-if="settings" class="field__total">{{ format(afterAmContribution) }}</td>
+            <td v-else></td>
+          </tr>
 
-              <td class="field__total"></td>
-            </tr>
+          <tr class="field">
+            <td v-if="settings" class="field__label">A-skat (Fradag: {{ format(settings.deduction) }})</td>
+            <td v-else></td>
+
+            <td v-if="settings">{{ settings.tax }}%</td>
+            <td v-else></td>
+
+            <td v-if="settings">-{{ format(tax) }}</td>
+            <td v-else></td>
+
+            <td class="field__total"></td>
+          </tr>
 
 
-            <tr class="field total">
-              <td class="field__label">Løn</td>
+          <tr class="field total">
+            <td class="field__label">Løn</td>
 
-              <td></td>
+            <td></td>
 
-              <td></td>
+            <td></td>
 
-              <td v-if="settings" class="field__total">{{ format(afterTax) }}</td>
-              <td v-else></td>
-            </tr>
-          </tbody>
-        </table>
+            <td v-if="settings" class="field__total">{{ format(afterTax) }}</td>
+            <td v-else></td>
+          </tr>
+        </tbody>
+      </table>
 
-      </v-layout>
-    </v-slide-y-transition>
-  </v-container>
+    </VLayout>
+  </VContainer>
 </template>
 
 <script>
 import dayjs from 'dayjs'
-import api from '../api'
+import api from '@/api'
 
 export default {
   data() {
@@ -138,7 +136,7 @@ export default {
         return this.date.toDate().toLocaleDateString(undefined, options)
       }
 
-      const options = {year: '2-digit', month: 'short', day: 'numeric'}
+      const options = { year: '2-digit', month: 'short', day: 'numeric' }
 
       return [this.date, this.date.add(1, 'month')]
         .map(date => date.toDate().toLocaleDateString(undefined, options))
@@ -159,7 +157,7 @@ export default {
       return Math.max(this.moneyEarned - this.settings.atpcontribution, 0)
     },
     amContribution() {
-      return this.afterATP * .08
+      return this.afterATP * 0.08
     },
     afterAmContribution() {
       return this.afterATP - this.amContribution
@@ -169,7 +167,9 @@ export default {
         return 0
       }
 
-      return (this.afterAmContribution - this.settings.deduction) / this.settings.tax
+      return (
+        (this.afterAmContribution - this.settings.deduction) / this.settings.tax
+      )
     },
     afterTax() {
       return this.afterAmContribution - this.tax
@@ -179,7 +179,10 @@ export default {
   methods: {
     async fetch(initial = false) {
       this.loading = true
-      const data = await api.calculate(initial ? null : this.date, this.settings)
+      const data = await api.calculate(
+        initial ? null : this.date,
+        this.settings
+      )
       this.hours = data.hours
       this.date = dayjs(data.date)
       this.settings = data.settings

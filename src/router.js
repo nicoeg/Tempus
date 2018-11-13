@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import netlifyIdentity from 'netlify-identity-widget/build/netlify-identity'
+
 import Register from './views/Register.vue'
 
 Vue.use(Router)
 
-const router =  new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -18,7 +20,8 @@ const router =  new Router({
     {
       path: '/udregning',
       name: 'calculate',
-      component: () => import(/* webpackChunkName: "calculate" */ './views/Calculate.vue'),
+      component: () =>
+        import(/* webpackChunkName: "calculate" */ './views/Calculate.vue'),
       meta: {
         name: 'Lønseddel'
       }
@@ -26,7 +29,8 @@ const router =  new Router({
     {
       path: '/indstillinger',
       name: 'settings',
-      component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
+      component: () =>
+        import(/* webpackChunkName: "settings" */ './views/Settings.vue'),
       meta: {
         name: 'Indstillinger'
       }
@@ -34,9 +38,10 @@ const router =  new Router({
     {
       path: '/login',
       name: 'login',
-      component: () => import(/* webpackChunkName: "login" */ './views/Login.vue'),
+      component: () =>
+        import(/* webpackChunkName: "login" */ './views/Login.vue'),
       beforeEnter: (to, from, next) => {
-        if (true) { // TODO: Check auth
+        if (netlifyIdentity.currentUser()) {
           return router.push('/')
         }
 
@@ -47,7 +52,7 @@ const router =  new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login' && !true) { // TODO: Check auth
+  if (to.name !== 'login' && !netlifyIdentity.currentUser()) {
     return router.push('/login')
   }
 

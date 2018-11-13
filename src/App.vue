@@ -1,72 +1,79 @@
 <template>
-  <v-app>
-    <v-navigation-drawer
-      persistent
+  <VApp>
+    <VNavigationDrawer
       v-model="drawer"
+      persistent
       enable-resize-watcher
       app
     >
-      <v-list>
+      <VList>
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <router-link tag="span" to="/">
-          <v-list-tile :value="$route.name == 'register'">
-            <v-list-tile-action>
-              <v-icon>access_time</v-icon>
-            </v-list-tile-action>
+          <VListTile :value="$route.name == 'register'">
+            <VListTileAction>
+              <VIcon>access_time</VIcon>
+            </VListTileAction>
 
-            <v-list-tile-content>
-              <v-list-tile-title>Timeregistrering</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            <VListTileContent>
+              <VListTileTitle>Timeregistrering</VListTileTitle>
+            </VListTileContent>
+          </VListTile>
         </router-link>
 
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <router-link tag="span" to="/udregning">
-          <v-list-tile :value="$route.name == 'calculate'">
-            <v-list-tile-action>
-              <v-icon>receipt</v-icon>
-            </v-list-tile-action>
+          <VListTile :value="$route.name == 'calculate'">
+            <VListTileAction>
+              <VIcon>receipt</VIcon>
+            </VListTileAction>
 
-            <v-list-tile-content>
-              <v-list-tile-title>Lønseddel</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            <VListTileContent>
+              <VListTileTitle>Lønseddel</VListTileTitle>
+            </VListTileContent>
+          </VListTile>
         </router-link>
 
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
         <router-link tag="span" to="/indstillinger">
-          <v-list-tile :value="$route.name == 'settings'">
-            <v-list-tile-action>
-              <v-icon>settings</v-icon>
-            </v-list-tile-action>
+          <VListTile :value="$route.name == 'settings'">
+            <VListTileAction>
+              <VIcon>settings</VIcon>
+            </VListTileAction>
 
-            <v-list-tile-content>
-              <v-list-tile-title>Indstillinger</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+            <VListTileContent>
+              <VListTileTitle>Indstillinger</VListTileTitle>
+            </VListTileContent>
+          </VListTile>
         </router-link>
-      </v-list>
-    </v-navigation-drawer>
-    
-    <v-toolbar app dark color="primary">
-      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      </VList>
+    </VNavigationDrawer>
 
-      <v-toolbar-title v-text="routeName" />
+    <VToolbar app dark color="primary">
+      <VToolbarSideIcon @click.stop="drawer = !drawer"></VToolbarSideIcon>
 
-      <v-spacer />
+      <VToolbarTitle v-text="routeName" />
 
-      <v-btn flat icon @click="login">
-        <v-icon>person</v-icon>
-      </v-btn>
-    </v-toolbar>
-    
-    <v-content>
-      <router-view/>
-    </v-content>
-  </v-app>
+      <VSpacer />
+
+      <VBtn flat icon @click="login">
+        <VIcon>person</VIcon>
+      </VBtn>
+    </VToolbar>
+
+    <VContent>
+      <VSlideYTransition mode="out-in">
+        <!-- eslint-disable-next-line vue/component-name-in-template-casing -->
+        <router-view/>
+      </VSlideYTransition>
+    </VContent>
+  </VApp>
 </template>
 
 <script>
+import netlifyIdentity from 'netlify-identity-widget/build/netlify-identity'
 
 export default {
-  data () {
+  data() {
     return {
       drawer: false
     }
@@ -80,22 +87,21 @@ export default {
 
   methods: {
     login() {
-      window.netlifyIdentity.open("login")
+      netlifyIdentity.open('login')
     }
   }
 }
 </script>
 
 <style>
-  .v-toolbar__content .v-toolbar__title {
-    margin-left: 0;
-    text-transform: capitalize;
-  }
+.v-toolbar__content .v-toolbar__title {
+  margin-left: 0;
+  text-transform: capitalize;
+}
 </style>
 
 <style scoped>
-  .v-list > span {
-    cursor: pointer;
-  }
+.v-list > span {
+  cursor: pointer;
+}
 </style>
-
