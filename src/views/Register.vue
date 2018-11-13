@@ -34,6 +34,43 @@
                     </VCard>
                 </VDialog>
 
+                <VDialog
+                    ref="fromDialog"
+                    v-model="fromModal"
+                    class="dialog"
+                    :return-value.sync="from"
+                    lazy
+                >
+                    <VTimePicker
+                        v-if="fromModal"
+                        v-model="from"
+                        format="24hr"
+                    >
+                        <VSpacer></VSpacer>
+                        <VBtn flat color="primary" @click="fromModal = false">Fortryd</VBtn>
+                        <VBtn flat color="primary" @click="$refs.fromDialog.save(from)">OK</VBtn>
+                    </VTimePicker>
+                </VDialog>
+
+                <VDialog
+                    ref="toDialog"
+                    v-model="toModal"
+                    class="dialog"
+                    :return-value.sync="to"
+                    persistent
+                    lazy
+                >
+                    <VTimePicker
+                        v-if="toModal"
+                        v-model="to"
+                        format="24hr"
+                    >
+                        <VSpacer></VSpacer>
+                        <VBtn flat color="primary" @click="toModal = false">Fortryd</VBtn>
+                        <VBtn flat color="primary" @click="$refs.toDialog.save(to)">OK</VBtn>
+                    </VTimePicker>
+                </VDialog>
+
                 <div class="date-header">
                     <VBtn flat icon color="primary" @click="previousDay">
                         <VIcon>keyboard_arrow_left</VIcon>
@@ -55,60 +92,27 @@
                     </VBtn>
                 </div>
 
-                <VDialog
-                    ref="fromDialog"
-                    v-model="fromModal"
-                    class="dialog"
-                    :return-value.sync="from"
-                    lazy
-                >
+                <div class="time-container">
                     <VTextField
-                        slot="activator"
                         v-model="from"
                         label="Start tidspunkt"
-                        prepend-icon="access_time"
                         solo
                         readonly
+                        hide-details
+                        @click="fromModal = true"
                     />
 
-                    <VTimePicker
-                        v-if="fromModal"
-                        v-model="from"
-                        format="24hr"
-                    >
-                        <VSpacer></VSpacer>
-                        <VBtn flat color="primary" @click="fromModal = false">Fortryd</VBtn>
-                        <VBtn flat color="primary" @click="$refs.fromDialog.save(from)">OK</VBtn>
-                    </VTimePicker>
-                </VDialog>
+                    <span class="time-container__spacer">-</span>
 
-                <VDialog
-                    ref="toDialog"
-                    v-model="toModal"
-                    class="dialog"
-                    :return-value.sync="to"
-                    persistent
-                    lazy
-                >
                     <VTextField
-                        slot="activator"
                         v-model="to"
                         label="Slut tidspunkt"
-                        prepend-icon="access_time"
                         solo
                         readonly
+                        hide-details
+                        @click="toModal = true"
                     />
-
-                    <VTimePicker
-                        v-if="toModal"
-                        v-model="to"
-                        format="24hr"
-                    >
-                        <VSpacer></VSpacer>
-                        <VBtn flat color="primary" @click="toModal = false">Fortryd</VBtn>
-                        <VBtn flat color="primary" @click="$refs.toDialog.save(to)">OK</VBtn>
-                    </VTimePicker>
-                </VDialog>
+                </div>
 
                 <VBtn
                     :loading="saving"
@@ -249,17 +253,32 @@ export default {
     text-align: center;
   }
 
-  .v-btn {
-    width: 15px;
-  }
-
   .v-btn:first-child {
     margin-left: 0;
   }
 
   .v-btn:last-child {
-    margin-left: 0;
+    margin-right: 0;
   }
+}
+
+.time-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+
+    &__spacer {
+        font-size: 25px;
+        font-weight: 300;
+        margin: 10px;
+        color: #666666;
+    }
+
+    input {
+        text-align: center;
+    }
 }
 
 .v-picker--time {
